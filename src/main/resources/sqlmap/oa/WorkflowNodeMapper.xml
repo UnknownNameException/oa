@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mmt.oa.dao.WorkflowNodeMapper" >
+  <resultMap id="BaseResultMap" type="com.mmt.oa.dao.model.WorkflowNode" >
+    <id column="workflow_node_id" property="workflowNodeId" jdbcType="INTEGER" />
+    <result column="workflow_id" property="workflowId" jdbcType="INTEGER" />
+    <result column="workflow_node_name" property="workflowNodeName" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <result column="approver" property="approver" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="BIT" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modified_by" property="modifiedBy" jdbcType="VARCHAR" />
+    <result column="modified_time" property="modifiedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    workflow_node_id, workflow_id, workflow_node_name, sort, describe, approver, is_valid, 
+    create_by, create_time, modified_by, modified_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from workflow_node
+    where workflow_node_id = #{workflowNodeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from workflow_node
+    where workflow_node_id = #{workflowNodeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mmt.oa.dao.model.WorkflowNode" >
+    insert into workflow_node (workflow_node_id, workflow_id, workflow_node_name, 
+      sort, describe, approver, 
+      is_valid, create_by, create_time, 
+      modified_by, modified_time)
+    values (#{workflowNodeId,jdbcType=INTEGER}, #{workflowId,jdbcType=INTEGER}, #{workflowNodeName,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{describe,jdbcType=VARCHAR}, #{approver,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=BIT}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mmt.oa.dao.model.WorkflowNode" >
+    insert into workflow_node
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="workflowNodeId != null" >
+        workflow_node_id,
+      </if>
+      <if test="workflowId != null" >
+        workflow_id,
+      </if>
+      <if test="workflowNodeName != null" >
+        workflow_node_name,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="describe != null" >
+        describe,
+      </if>
+      <if test="approver != null" >
+        approver,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifiedBy != null" >
+        modified_by,
+      </if>
+      <if test="modifiedTime != null" >
+        modified_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="workflowNodeId != null" >
+        #{workflowNodeId,jdbcType=INTEGER},
+      </if>
+      <if test="workflowId != null" >
+        #{workflowId,jdbcType=INTEGER},
+      </if>
+      <if test="workflowNodeName != null" >
+        #{workflowNodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="describe != null" >
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null" >
+        #{approver,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=BIT},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null" >
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null" >
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mmt.oa.dao.model.WorkflowNode" >
+    update workflow_node
+    <set >
+      <if test="workflowId != null" >
+        workflow_id = #{workflowId,jdbcType=INTEGER},
+      </if>
+      <if test="workflowNodeName != null" >
+        workflow_node_name = #{workflowNodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="describe != null" >
+        describe = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="approver != null" >
+        approver = #{approver,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=BIT},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null" >
+        modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null" >
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where workflow_node_id = #{workflowNodeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mmt.oa.dao.model.WorkflowNode" >
+    update workflow_node
+    set workflow_id = #{workflowId,jdbcType=INTEGER},
+      workflow_node_name = #{workflowNodeName,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      describe = #{describe,jdbcType=VARCHAR},
+      approver = #{approver,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=BIT},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modified_by = #{modifiedBy,jdbcType=VARCHAR},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+    where workflow_node_id = #{workflowNodeId,jdbcType=INTEGER}
+  </update>
+</mapper>
