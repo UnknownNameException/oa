@@ -1,7 +1,10 @@
 package com.mmt.oa.dao;
 
+import org.springframework.stereotype.Repository;
+
 import com.mmt.oa.dao.model.Task;
 
+@Repository
 public interface TaskMapper {
     int deleteByPrimaryKey(Integer taskId);
 

@@ -257,6 +257,9 @@
 			<if test="isValid != null">
 				is_valid = #{isValid,jdbcType=BIT},
 			</if>
+			<if test="modifiedBy != null">
+				modified_by = #{modifiedBy,jdbcType=VARCHAR},
+			</if>
 		</set>
 		<trim prefix="where" prefixOverrides="or |and ">
 			<if test="userId != null">
@@ -265,24 +268,25 @@
 		</trim>
 	</update>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	<update id="deleteUserAccount"
+		parameterType="com.mmt.oa.dao.model.User">
+		update user
+		<set>
+			<if test="isValid != null">
+				is_valid = #{isValid,jdbcType=BIT},
+			</if>
+			<if test="modifiedBy != null">
+				modified_by = #{modifiedBy,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<trim prefix="where" prefixOverrides="or |and ">
+			<if test="userId != null">
+				and user_id = #{userId,jdbcType=INTEGER}
+			</if>
+			<if test="userName != null">
+				and user_name = #{userName,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</update>
 
 </mapper>

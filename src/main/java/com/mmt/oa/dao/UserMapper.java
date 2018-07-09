@@ -25,4 +25,6 @@ public interface UserMapper {
 	List<User> queryUserDetails(User user);
 	
 	int modifyUserAccount(User user);
+	
+	int deleteUserAccount(User user);
 }

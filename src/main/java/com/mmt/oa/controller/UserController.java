@@ -139,6 +139,11 @@ public class UserController {
 		return response;
 	}
 
+	/**
+	 * 更新用户信息
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/modifyUserAccount", method = RequestMethod.POST)
 	public ResponseModel modifyUserAccount(@RequestBody RequestModel request) {
 		ResponseModel response = new ResponseModel();
@@ -185,14 +190,88 @@ public class UserController {
 		return response;
 	}
 
+	/**
+	 * 删除用户账号
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/deleteUserAccount", method = RequestMethod.POST)
 	public ResponseModel deleteUserAccount(@RequestBody RequestModel request) {
-		return null;
+		ResponseModel response = new ResponseModel();
+		// 验证token
+		if (StringUtils.isEmpty(request.getToken()) || !request.getToken().equals(Constant.TOKEN)) {
+			response.setResCode(1);
+			response.setResMsg("接口调用,token验证失败");
+			return response;
+		}
+		
+		try {
+			Object obj = request.getContent();
+			User user = JSON.parseObject(JSONObject.toJSONString(obj), User.class);
+			if ((user.getUserId() == null || user.getUserId() == 0) && StringUtils.isEmpty(user.getUserName()) ) {
+				response.setResCode(1);
+				response.setResMsg("UserId和UserName不能都为空!");
+				return response;
+			}
+			user.setIsValid(false);
+			Integer i = userServiceImpl.deleteUserAccount(user);
+			if (i == 1) {
+				response.setResCode(0);
+				response.setResMsg("刪除成功！");
+			} else {
+				response.setResCode(1);
+				response.setResMsg("刪除失敗！");
+			}
+			
+		} catch (Exception e) {
+			response.setResCode(1);
+			response.setResMsg("删除失败!" + e.getMessage());
+			logger.error("/user/deleteUserAccount出现异常", e);
+		}
+		return response;
 	}
 
+	/**
+	 * 登录验证
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/userLogin", method = RequestMethod.POST)
 	public ResponseModel userLogin(@RequestBody RequestModel request) {
-		return null;
+		ResponseModel response = new ResponseModel();
+		// 验证token
+		if (StringUtils.isEmpty(request.getToken()) || !request.getToken().equals(Constant.TOKEN)) {
+			response.setResCode(1);
+			response.setResMsg("接口调用,token验证失败");
+			return response;
+		}
+		
+		try {
+			Object obj = request.getContent();
+			User user = JSON.parseObject(JSONObject.toJSONString(obj), User.class);
+			List<User> users = userServiceImpl.queryUserDetails(user);
+			UserDto dto = JSON.parseObject(JSON.toJSONString(users.get(0)), UserDto.class);
+			String pwd = encode.encrypt16(user.getUserPwd());
+			if (users.get(0).getUserPwd().equals(pwd) && dto.getIsValid()) {
+				response.setResCode(0);
+				response.setResMsg("登陆成功!");
+				Map<String, UserDto> map = new HashMap<>();
+				map.put("User", dto);
+				response.setResult(dto);
+			} else if (!dto.getIsValid()) {
+				response.setResCode(1);
+				response.setResMsg("登录失败,账号不存在!");
+			} else {
+				response.setResCode(1);
+				response.setResMsg("登录失败,用户名或密码错误!");
+			}
+			
+		} catch (Exception e) {
+			response.setResCode(1);
+			response.setResMsg("登录失败!" + e.getMessage());
+			logger.error("/user/userLogin出现异常", e);
+		}
+		return response;
 	}
 
 }

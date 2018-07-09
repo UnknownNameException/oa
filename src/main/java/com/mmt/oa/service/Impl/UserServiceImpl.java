@@ -53,8 +53,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Integer deleteUserAccount(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		Integer i = userMapper.deleteUserAccount(user);
+		return i;
 	}
 
 	@Override

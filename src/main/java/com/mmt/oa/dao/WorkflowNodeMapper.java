@@ -1,7 +1,10 @@
 package com.mmt.oa.dao;
 
+import org.springframework.stereotype.Repository;
+
 import com.mmt.oa.dao.model.WorkflowNode;
 
+@Repository
 public interface WorkflowNodeMapper {
     int deleteByPrimaryKey(Integer workflowNodeId);
 
