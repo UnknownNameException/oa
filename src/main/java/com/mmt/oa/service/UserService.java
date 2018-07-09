@@ -15,6 +15,6 @@ public interface UserService {
 	
 	public Integer deleteUserAccount(User user);
 	
-	public Integer userLogin(User user);
+	public User userLogin(User user);
 	
 }

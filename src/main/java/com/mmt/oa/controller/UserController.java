@@ -249,15 +249,15 @@ public class UserController {
 		try {
 			Object obj = request.getContent();
 			User user = JSON.parseObject(JSONObject.toJSONString(obj), User.class);
-			List<User> users = userServiceImpl.queryUserDetails(user);
-			UserDto dto = JSON.parseObject(JSON.toJSONString(users.get(0)), UserDto.class);
+			User u = userServiceImpl.userLogin(user);
+			UserDto dto = JSON.parseObject(JSON.toJSONString(u), UserDto.class);
 			String pwd = encode.encrypt16(user.getUserPwd());
-			if (users.get(0).getUserPwd().equals(pwd) && dto.getIsValid()) {
+			if (u.getUserPwd().equals(pwd) && dto.getIsValid()) {
 				response.setResCode(0);
 				response.setResMsg("登陆成功!");
 				Map<String, UserDto> map = new HashMap<>();
 				map.put("User", dto);
-				response.setResult(dto);
+				response.setResult(map);
 			} else if (!dto.getIsValid()) {
 				response.setResCode(1);
 				response.setResMsg("登录失败,账号不存在!");

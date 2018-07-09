@@ -102,6 +102,9 @@ public class RoleController {
 		try {
 			Object obj = request.getContent();
 			Role role = JSON.parseObject(JSONObject.toJSONString(obj), Role.class);
+			if (role.getIsValid() == null) {
+				role.setIsValid(true);
+			}
 			role.setCreateTime(new Date());
 			role.setModifiedTime(new Date());
 			role.setModifiedBy(role.getCreateBy());

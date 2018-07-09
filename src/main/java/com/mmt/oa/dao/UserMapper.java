@@ -27,4 +27,6 @@ public interface UserMapper {
 	int modifyUserAccount(User user);
 	
 	int deleteUserAccount(User user);
+	
+	User queryUserDetailByUser(User user);
 }

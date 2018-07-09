@@ -16,13 +16,11 @@ import com.mmt.oa.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
+	private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-	
 	@Autowired
 	private UserMapper userMapper;
-	
-	
+
 	@Override
 	public List<User> queryUserDetails(User user) {
 		List<User> users = userMapper.queryUserDetails(user);
@@ -32,14 +30,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserReturn addNewUser(User user) {
 		UserReturn re = new UserReturn();
-		List<User> list = userMapper.queryUserDetails(user);
-		if (!list.isEmpty()) {
+		User u = userMapper.queryUserDetailByUser(user);
+
+		if (u != null) {
 			re.setIsSuccess(0);
 			re.setUserName("用户名已存在!");
 			return re;
 		}
+		
 		int i = userMapper.addNewUser(user);
-		user = userMapper.queryUserDetails(user).get(0);
+		user = userMapper.queryUserDetailByUser(user);
 		re = JSON.parseObject(JSON.toJSONString(user), UserReturn.class);
 		re.setIsSuccess(i);
 		return re;
@@ -58,9 +58,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Integer userLogin(User user) {
-		// TODO Auto-generated method stub
-		return null;
+	public User userLogin(User user) {
+		User u = userMapper.queryUserDetailByUser(user);
+		return u;
 	}
 
 }

@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mmt.oa.dao.UserMapper">
-	<resultMap id="BaseResultMap"
-		type="com.mmt.oa.dao.model.User">
+	<resultMap id="BaseResultMap" type="com.mmt.oa.dao.model.User">
 		<id column="user_id" property="userId" jdbcType="INTEGER" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
-		<result column="department" property="department"
-			jdbcType="VARCHAR" />
+		<result column="department" property="department" jdbcType="VARCHAR" />
 		<result column="role_id" property="roleId" jdbcType="INTEGER" />
-		<result column="user_name" property="userName"
-			jdbcType="VARCHAR" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
 		<result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
 		<result column="is_valid" property="isValid" jdbcType="BIT" />
-		<result column="create_time" property="createTime"
-			jdbcType="TIMESTAMP" />
-		<result column="create_by" property="createBy"
-			jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="create_by" property="createBy" jdbcType="VARCHAR" />
 		<result column="modified_time" property="modifiedTime"
 			jdbcType="TIMESTAMP" />
-		<result column="modified_by" property="modifiedBy"
-			jdbcType="VARCHAR" />
+		<result column="modified_by" property="modifiedBy" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		user_id, name, department, role_id, user_name, user_pwd,
@@ -34,8 +28,7 @@
 		from user
 		where user_id = #{userId,jdbcType=INTEGER}
 	</select>
-	<delete id="deleteByPrimaryKey"
-		parameterType="java.lang.Integer">
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from user
 		where user_id =
 		#{userId,jdbcType=INTEGER}
@@ -57,8 +50,7 @@
 		#{modifiedTime,jdbcType=TIMESTAMP},
 		#{modifiedBy,jdbcType=VARCHAR})
 	</insert>
-	<insert id="insertSelective"
-		parameterType="com.mmt.oa.dao.model.User">
+	<insert id="insertSelective" parameterType="com.mmt.oa.dao.model.User">
 		insert into user
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="userId != null">
@@ -131,8 +123,7 @@
 			</if>
 		</trim>
 	</insert>
-	<update id="updateByPrimaryKeySelective"
-		parameterType="com.mmt.oa.dao.model.User">
+	<update id="updateByPrimaryKeySelective" parameterType="com.mmt.oa.dao.model.User">
 		update user
 		<set>
 			<if test="name != null">
@@ -168,15 +159,17 @@
 		</set>
 		where user_id = #{userId,jdbcType=INTEGER}
 	</update>
-	<update id="updateByPrimaryKey"
-		parameterType="com.mmt.oa.dao.model.User">
+	<update id="updateByPrimaryKey" parameterType="com.mmt.oa.dao.model.User">
 		update user
-		set name = #{name,jdbcType=VARCHAR},
-		department = #{department,jdbcType=VARCHAR},
+		set
+		name = #{name,jdbcType=VARCHAR},
+		department =
+		#{department,jdbcType=VARCHAR},
 		role_id =
 		#{roleId,jdbcType=INTEGER},
 		user_name = #{userName,jdbcType=VARCHAR},
-		user_pwd = #{userPwd,jdbcType=VARCHAR},
+		user_pwd =
+		#{userPwd,jdbcType=VARCHAR},
 		is_valid =
 		#{isValid,jdbcType=BIT},
 		create_time =
@@ -192,21 +185,24 @@
 	</update>
 
 
-	<insert id="addNewUser"
-		parameterType="com.mmt.oa.dao.model.User">
-		insert into user (name, department,
+	<insert id="addNewUser" parameterType="com.mmt.oa.dao.model.User">
+		insert into user (name,
+		department,
 		role_id, user_name,
 		user_pwd,
-		is_valid, create_time, create_by,
+		is_valid, create_time,
+		create_by,
 		modified_time, modified_by)
 		values (#{name,jdbcType=VARCHAR},
 		#{department,jdbcType=VARCHAR},
-		#{roleId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR},
+		#{roleId,jdbcType=INTEGER},
+		#{userName,jdbcType=VARCHAR},
 		#{userPwd,jdbcType=VARCHAR},
 		#{isValid,jdbcType=BIT},
 		#{createTime,jdbcType=TIMESTAMP},
 		#{createBy,jdbcType=VARCHAR},
-		#{modifiedTime,jdbcType=TIMESTAMP}, #{modifiedBy,jdbcType=VARCHAR})
+		#{modifiedTime,jdbcType=TIMESTAMP},
+		#{modifiedBy,jdbcType=VARCHAR})
 	</insert>
 
 	<select id="queryUserDetails" resultMap="BaseResultMap"
@@ -235,8 +231,7 @@
 		</trim>
 	</select>
 
-	<update id="modifyUserAccount"
-		parameterType="com.mmt.oa.dao.model.User">
+	<update id="modifyUserAccount" parameterType="com.mmt.oa.dao.model.User">
 		update user
 		<set>
 			<if test="name != null">
@@ -268,8 +263,7 @@
 		</trim>
 	</update>
 
-	<update id="deleteUserAccount"
-		parameterType="com.mmt.oa.dao.model.User">
+	<update id="deleteUserAccount" parameterType="com.mmt.oa.dao.model.User">
 		update user
 		<set>
 			<if test="isValid != null">
@@ -288,5 +282,29 @@
 			</if>
 		</trim>
 	</update>
+
+	<select id="queryUserDetailByUser" resultMap="BaseResultMap"
+		parameterType="com.mmt.oa.dao.model.User">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		<trim prefix="where" prefixOverrides="or |and ">
+			<if test="userId != null">
+				and user_id = #{userId,jdbcType=INTEGER}
+			</if>
+			<if test="name != null">
+				and name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="department != null">
+				and department = #{department,jdbcType=VARCHAR}
+			</if>
+			<if test="userName != null">
+				and user_name = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="isValid != null">
+				and is_valid = #{isValid,jdbcType=BIT}
+			</if>
+		</trim>
+	</select>
 
 </mapper>
