@@ -45,12 +45,6 @@ public class RoleController {
 		ResponseModel response = new ResponseModel();
 		int pageNum = 1;
 		int pageSize = 10;
-		if (request.getPageNum() != 0) {
-			pageNum = request.getPageNum();
-		}
-		if (request.getPageSize() != 0) {
-			pageSize = request.getPageSize();
-		}
 		// 验证token
 		if (StringUtils.isEmpty(request.getToken()) || !request.getToken().equals(Constant.TOKEN)) {
 			response.setResCode(1);
@@ -60,6 +54,13 @@ public class RoleController {
 
 		try {
 			Object obj = request.getContent();
+			JSONObject jo = JSON.parseObject(JSONObject.toJSONString(obj));
+			if (jo.containsKey("pageNum")) {
+				pageNum = jo.getInteger("pageNum");
+			}
+			if (jo.containsKey("pageSize")) {
+				pageSize = jo.getInteger("pageSize");
+			}
 			Role role = JSON.parseObject(JSONObject.toJSONString(obj), Role.class);
 			PageHelper.startPage(pageNum, pageSize);
 			List<Role> roles = roleServiceImpl.queryRoleInfo(role);

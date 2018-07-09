@@ -99,12 +99,6 @@ public class UserController {
 		ResponseModel response = new ResponseModel();
 		int pageNum = 1;
 		int pageSize = 10;
-		if (request.getPageNum() != 0) {
-			pageNum = request.getPageNum();
-		}
-		if (request.getPageSize() != 0) {
-			pageSize = request.getPageSize();
-		}
 		// 验证token
 		if (StringUtils.isEmpty(request.getToken()) || !request.getToken().equals(Constant.TOKEN)) {
 			response.setResCode(1);
@@ -114,6 +108,13 @@ public class UserController {
 
 		try {
 			Object obj = request.getContent();
+			JSONObject jo = JSON.parseObject(JSONObject.toJSONString(obj));
+			if (jo.containsKey("pageNum")) {
+				pageNum = jo.getInteger("pageNum");
+			}
+			if (jo.containsKey("pageSize")) {
+				pageSize = jo.getInteger("pageSize");
+			}
 			User user = JSON.parseObject(JSONObject.toJSONString(obj), User.class);
 			PageHelper.startPage(pageNum, pageSize);
 			List<User> users = userServiceImpl.queryUserDetails(user);
