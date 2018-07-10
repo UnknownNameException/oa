@@ -116,6 +116,9 @@ public class UserController {
 				pageSize = jo.getInteger("pageSize");
 			}
 			User user = JSON.parseObject(JSONObject.toJSONString(obj), User.class);
+			if (user.getUserId() == 0) {
+				user.setUserId(null);
+			}
 			PageHelper.startPage(pageNum, pageSize);
 			List<User> users = userServiceImpl.queryUserDetails(user);
 			List<UserDto> dtos = new ArrayList<>();
@@ -269,7 +272,7 @@ public class UserController {
 			
 		} catch (Exception e) {
 			response.setResCode(1);
-			response.setResMsg("登录失败!" + e.getMessage());
+			response.setResMsg("登录失败!" + e.toString() + ":" + e.getMessage());
 			logger.error("/user/userLogin出现异常", e);
 		}
 		return response;

@@ -1,5 +1,7 @@
 package com.mmt.oa.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.mmt.oa.dao.model.Workflow;
@@ -17,4 +19,14 @@ public interface WorkflowMapper {
     int updateByPrimaryKeySelective(Workflow record);
 
     int updateByPrimaryKey(Workflow record);
+    
+    Integer addNewWorkflow(Workflow workflow);
+    
+    Integer modifyWorkflowInfo(Workflow workflow);
+    
+    Integer deleteWorkflowInfo(Workflow workflow);
+    
+    List<Workflow> queryWorkflowInfo(Workflow workflow);
+    
+    Workflow queryWorkflowInfoById(Workflow workflow);
 }
