@@ -12,7 +12,7 @@ public class WorkflowNodeTemplate {
 
 	private int sort;
 
-	private String describe;
+	private String remark;
 
 	private String approver;
 
@@ -60,12 +60,12 @@ public class WorkflowNodeTemplate {
 		this.sort = sort;
 	}
 
-	public String getDescribe() {
-		return describe;
+	public String getRemark() {
+		return remark;
 	}
 
-	public void setDescribe(String describe) {
-		this.describe = describe;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public String getApprover() {
@@ -127,7 +127,7 @@ public class WorkflowNodeTemplate {
 	@Override
 	public String toString() {
 		return "WorkflowNodeTemplate [workflowNodeId=" + workflowNodeId + ", workflowId=" + workflowId
-				+ ", workflowNodeName=" + workflowNodeName + ", sort=" + sort + ", describe=" + describe + ", approver="
+				+ ", workflowNodeName=" + workflowNodeName + ", sort=" + sort + ", remark=" + remark + ", approver="
 				+ approver + ", approverName=" + approverName + ", isValid=" + isValid + ", createBy=" + createBy
 				+ ", createTime=" + createTime + ", modifiedBy=" + modifiedBy + ", modifiedTime=" + modifiedTime + "]";
 	}

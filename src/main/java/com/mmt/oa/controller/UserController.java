@@ -67,7 +67,10 @@ public class UserController {
 				user.setIsValid(true);
 			}
 			UserReturn re = userServiceImpl.addNewUser(user);
-			if (re.getIsSuccess() == 1) {
+			if (re.getIsSuccess() == 0) {
+				response.setResCode(1);
+				response.setResMsg("用户添加失败!" + re.getUserName());
+			} else {
 				UserDto dto = JSON.parseObject(JSON.toJSONString(re), UserDto.class);
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");
 				dto.setCreateTime(sdf.format(re.getCreateTime()));
@@ -77,9 +80,6 @@ public class UserController {
 				Map<String, UserDto> map = new HashMap<>();
 				map.put("User", dto);
 				response.setResult(map);
-			} else {
-				response.setResCode(1);
-				response.setResMsg("用户添加失败!" + re.getUserName());
 			}
 		} catch (Exception e) {
 			response.setResCode(1);
@@ -170,7 +170,10 @@ public class UserController {
 				user.setUserPwd(encode.encrypt16(user.getUserPwd()));
 			}
 			Integer i = userServiceImpl.modifyUserAccount(user);
-			if (i == 1) {
+			if (i == 0) {
+				response.setResCode(1);
+				response.setResMsg("更新失败!");
+			} else {
 				List<User> users = userServiceImpl.queryUserDetails(user);
 				UserDto dto = JSON.parseObject(JSON.toJSONString(users.get(0)), UserDto.class);
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");
@@ -181,9 +184,6 @@ public class UserController {
 				Map<String, UserDto> map = new HashMap<>();
 				map.put("User", dto);
 				response.setResult(map);
-			} else {
-				response.setResCode(1);
-				response.setResMsg("更新失败!");
 			}
 		} catch (Exception e) {
 			response.setResCode(1);
@@ -219,12 +219,12 @@ public class UserController {
 			}
 			user.setIsValid(false);
 			Integer i = userServiceImpl.deleteUserAccount(user);
-			if (i == 1) {
-				response.setResCode(0);
-				response.setResMsg("刪除成功！");
-			} else {
+			if (i == 0) {
 				response.setResCode(1);
 				response.setResMsg("刪除失敗！");
+			} else {
+				response.setResCode(0);
+				response.setResMsg("刪除成功！");
 			}
 			
 		} catch (Exception e) {

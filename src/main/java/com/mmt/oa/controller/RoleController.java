@@ -110,12 +110,12 @@ public class RoleController {
 			role.setModifiedTime(new Date());
 			role.setModifiedBy(role.getCreateBy());
 			int i = roleServiceImpl.addNewRole(role);
-			if (i == 1) {
-				response.setResCode(0);
-				response.setResMsg("角色添加成功!");
-			} else {
+			if (i == 0) {
 				response.setResCode(1);
 				response.setResMsg("角色添加失败!");
+			} else {
+				response.setResCode(0);
+				response.setResMsg("角色添加成功!");
 			}
 		} catch (Exception e) {
 			response.setResCode(1);
@@ -144,12 +144,12 @@ public class RoleController {
 			Object obj = request.getContent();
 			Role role = JSON.parseObject(JSONObject.toJSONString(obj), Role.class);
 			Integer i = roleServiceImpl.modifyRoleInfo(role);
-			if (i == 1) {
-				response.setResCode(0);
-				response.setResMsg("角色信息修改成功!");
-			} else {
+			if (i == 0) {
 				response.setResCode(1);
 				response.setResMsg("角色信息修改失败!");
+			} else {
+				response.setResCode(0);
+				response.setResMsg("角色信息修改成功!");
 			}
 		} catch (Exception e) {
 			response.setResCode(1);
@@ -174,12 +174,12 @@ public class RoleController {
 			Role role = JSON.parseObject(JSONObject.toJSONString(obj), Role.class);
 			role.setIsValid(false);
 			Integer i = roleServiceImpl.deleteRoleInfo(role);
-			if (i == 1) {
-				response.setResCode(0);
-				response.setResMsg("角色信息删除成功!");
-			} else {
+			if (i == 0) {
 				response.setResCode(1);
 				response.setResMsg("角色信息删除失败!");
+			} else {
+				response.setResCode(0);
+				response.setResMsg("角色信息删除成功!");
 			}
 		} catch (Exception e) {
 			response.setResCode(1);

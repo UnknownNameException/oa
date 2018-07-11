@@ -39,9 +39,6 @@ public class WorkflowController {
 	@Autowired
 	private WorkflowServiceImpl workflowServiceImpl;
 
-	@Autowired
-	private UserService userService;
-
 	/**
 	 * 添加工作流模板
 	 * 
@@ -61,17 +58,18 @@ public class WorkflowController {
 		try {
 			Object obj = request.getContent();
 			Workflow workflow = JSON.parseObject(JSON.toJSONString(obj), Workflow.class);
+			workflow.setWorkflowNodeCount(0);
 			workflow.setWorkflowId(null);
 			workflow.setModifiedBy(workflow.getCreateBy());
 			workflow.setCreateTime(new Date());
 			workflow.setModifiedTime(new Date());
 			Integer i = workflowServiceImpl.addNewWorkflow(workflow);
-			if (i == 1) {
-				response.setResCode(0);
-				response.setResMsg("添加流程模版成功!");
-			} else {
+			if (i == 0) {
 				response.setResCode(1);
 				response.setResMsg("内部异常,添加流程模版失败,请稍后重试!");
+			} else {
+				response.setResCode(0);
+				response.setResMsg("添加流程模版成功!");
 			}
 		} catch (Exception e) {
 			response.setResCode(1);
@@ -105,12 +103,12 @@ public class WorkflowController {
 			node.setModifiedBy(node.getCreateBy());
 			node.setModifiedTime(new Date());
 			Integer i = workflowServiceImpl.addNewWorkflowNode(node);
-			if (i == 1) {
-				response.setResCode(0);
-				response.setResMsg("添加流程节点模版成功!");
-			} else {
+			if (i == 0) {
 				response.setResCode(1);
 				response.setResMsg("内部异常,添加流程节点模版失败,请稍后重试!");
+			} else {
+				response.setResCode(0);
+				response.setResMsg("添加流程节点模版成功!");
 			}
 		} catch (Exception e) {
 			response.setResCode(1);
@@ -139,13 +137,15 @@ public class WorkflowController {
 		try {
 			Object obj = request.getContent();
 			Workflow workflow = JSON.parseObject(JSON.toJSONString(obj), Workflow.class);
+			workflow.setWorkflowNodeCount(null);
+			workflow.setIsValid(null);
 			Integer i = workflowServiceImpl.modifyWorkflowInfo(workflow);
-			if (i == 1) {
-				response.setResCode(0);
-				response.setResMsg("添加流程模版成功!");
-			} else {
+			if (i == 0) {
 				response.setResCode(1);
 				response.setResMsg("内部异常,修改流程模版失败,请稍后重试!");
+			} else {
+				response.setResCode(0);
+				response.setResMsg("修改流程模版成功!");
 			}
 		} catch (Exception e) {
 			response.setResCode(1);
@@ -174,13 +174,14 @@ public class WorkflowController {
 		try {
 			Object obj = request.getContent();
 			WorkflowNode node = JSON.parseObject(JSON.toJSONString(obj), WorkflowNode.class);
+			node.setIsValid(null);
 			Integer i = workflowServiceImpl.modifyWorkflowNodeInfo(node);
-			if (i == 1) {
-				response.setResCode(0);
-				response.setResMsg("修改流程节点模版成功!");
-			} else {
+			if (i == 0) {
 				response.setResCode(1);
 				response.setResMsg("内部异常,修改流程节点模版失败,请稍后重试!");
+			} else {
+				response.setResCode(0);
+				response.setResMsg("修改流程节点模版成功!");
 			}
 		} catch (Exception e) {
 			response.setResCode(1);
@@ -211,12 +212,12 @@ public class WorkflowController {
 			Workflow workflow = JSON.parseObject(JSON.toJSONString(obj), Workflow.class);
 			workflow.setIsValid(false);
 			Integer i = workflowServiceImpl.deleteWorkflowInfo(workflow);
-			if (i == 1) {
-				response.setResCode(0);
-				response.setResMsg("删除流程模版成功!");
-			} else {
+			if (i == 0) {
 				response.setResCode(1);
 				response.setResMsg("内部异常,删除流程模版失败,请稍后重试!");
+			} else {
+				response.setResCode(0);
+				response.setResMsg("删除流程模版成功!");
 			}
 		} catch (Exception e) {
 			response.setResCode(1);
@@ -247,23 +248,24 @@ public class WorkflowController {
 			WorkflowNode node = JSON.parseObject(JSON.toJSONString(obj), WorkflowNode.class);
 			node.setIsValid(false);
 			Integer i = workflowServiceImpl.deleteWorkflowNodeInfo(node);
-			if (i == 1) {
-				response.setResCode(0);
-				response.setResMsg("删除流程节点模版成功!");
-			} else {
+			if (i == 0) {
 				response.setResCode(1);
 				response.setResMsg("内部异常,删除流程节点模版失败,请稍后重试!");
+			} else {
+				response.setResCode(0);
+				response.setResMsg("删除流程节点模版成功!");
 			}
 		} catch (Exception e) {
 			response.setResCode(1);
 			response.setResMsg("删除流程节点模版失败!" + e.toString() + ":" + e.getMessage());
 			logger.error("/workflow/deleteWorkflowNodeInfo出现异常", e);
 		}
-		return null;
+		return response;
 	}
 
 	/**
 	 * 查询已创建的工作流模板
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -293,15 +295,17 @@ public class WorkflowController {
 			List<WorkflowTemplateDto> dtos = JSON.parseArray(JSON.toJSONString(workflows), WorkflowTemplateDto.class);
 			if (workflows == null || workflows.isEmpty()) {
 				response.setResCode(1);
-				response.setResMsg("内部异常,查询流程模版失败,请稍后重试!");
+				response.setResMsg("未查询到数据,请更改查询条件后重试!");
 			} else {
 				for (WorkflowTemplateDto dto : dtos) {
 					WorkflowNode node = new WorkflowNode();
 					node.setWorkflowId(dto.getWorkflowId());
+					node.setIsValid(true);
 					List<WorkflowNodeTemplate> nodes = workflowServiceImpl.queryWorkflowNodeTemplateInfo(node);
 					List<WorkflowNodeTemplateDto> nodeDtos = new ArrayList<>();
 					for (WorkflowNodeTemplate template : nodes) {
-						WorkflowNodeTemplateDto tem = JSON.parseObject(JSON.toJSONString(template), WorkflowNodeTemplateDto.class);
+						WorkflowNodeTemplateDto tem = JSON.parseObject(JSON.toJSONString(template),
+								WorkflowNodeTemplateDto.class);
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");
 						tem.setCreateTime(sdf.format(template.getCreateTime()));
 						tem.setModifiedTime(sdf.format(template.getModifiedTime()));
@@ -326,6 +330,7 @@ public class WorkflowController {
 
 	/**
 	 * 查询已创建的工作流节点模板信息
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -340,7 +345,7 @@ public class WorkflowController {
 			response.setResMsg("接口调用,token验证失败");
 			return response;
 		}
-		
+
 		try {
 			Object obj = request.getContent();
 			JSONObject jo = JSON.parseObject(JSONObject.toJSONString(obj));
@@ -354,7 +359,8 @@ public class WorkflowController {
 			List<WorkflowNodeTemplate> nodes = workflowServiceImpl.queryWorkflowNodeTemplateInfo(node);
 			List<WorkflowNodeTemplateDto> nodeDtos = new ArrayList<>();
 			for (WorkflowNodeTemplate template : nodes) {
-				WorkflowNodeTemplateDto tem = JSON.parseObject(JSON.toJSONString(template), WorkflowNodeTemplateDto.class);
+				WorkflowNodeTemplateDto tem = JSON.parseObject(JSON.toJSONString(template),
+						WorkflowNodeTemplateDto.class);
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");
 				tem.setCreateTime(sdf.format(template.getCreateTime()));
 				tem.setModifiedTime(sdf.format(template.getModifiedTime()));
@@ -365,7 +371,7 @@ public class WorkflowController {
 			Map<String, List<WorkflowNodeTemplateDto>> map = new HashMap<>();
 			map.put("WorkflowTemplateNodes", nodeDtos);
 			response.setResult(map);
-			
+
 		} catch (Exception e) {
 			response.setResCode(1);
 			response.setResMsg("查询流程节点模版失败!" + e.toString() + ":" + e.getMessage());

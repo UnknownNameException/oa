@@ -7,7 +7,7 @@
 		<result column="workflow_node_name" property="workflowNodeName"
 			jdbcType="VARCHAR" />
 		<result column="sort" property="sort" jdbcType="INTEGER" />
-		<result column="describe" property="describe" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
 		<result column="approver" property="approver" jdbcType="VARCHAR" />
 		<result column="is_valid" property="isValid" jdbcType="BIT" />
 		<result column="create_by" property="createBy" jdbcType="VARCHAR" />
@@ -22,7 +22,7 @@
 		<result column="workflow_node_name" property="workflowNodeName"
 			jdbcType="VARCHAR" />
 		<result column="sort" property="sort" jdbcType="INTEGER" />
-		<result column="describe" property="describe" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
 		<result column="approver" property="approver" jdbcType="VARCHAR" />
 		<result column="approverName" property="approverName" jdbcType="VARCHAR" />
 		<result column="is_valid" property="isValid" jdbcType="BIT" />
@@ -34,7 +34,7 @@
 	</resultMap>
 	<sql id="Base_Column_List">
 		workflow_node_id, workflow_id, workflow_node_name, sort,
-		describe, approver, is_valid,
+		remark, approver, is_valid,
 		create_by, create_time, modified_by,
 		modified_time
 	</sql>
@@ -56,14 +56,14 @@
 		insert into workflow_node
 		(workflow_node_id, workflow_id,
 		workflow_node_name,
-		sort, describe,
+		sort, remark,
 		approver,
 		is_valid, create_by, create_time,
 		modified_by, modified_time)
 		values (#{workflowNodeId,jdbcType=INTEGER},
 		#{workflowId,jdbcType=INTEGER},
 		#{workflowNodeName,jdbcType=VARCHAR},
-		#{sort,jdbcType=INTEGER}, #{describe,jdbcType=VARCHAR},
+		#{sort,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
 		#{approver,jdbcType=VARCHAR},
 		#{isValid,jdbcType=BIT},
 		#{createBy,jdbcType=VARCHAR},
@@ -85,8 +85,8 @@
 			<if test="sort != null">
 				sort,
 			</if>
-			<if test="describe != null">
-				describe,
+			<if test="remark != null">
+				remark,
 			</if>
 			<if test="approver != null">
 				approver,
@@ -120,8 +120,8 @@
 			<if test="sort != null">
 				#{sort,jdbcType=INTEGER},
 			</if>
-			<if test="describe != null">
-				#{describe,jdbcType=VARCHAR},
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
 			</if>
 			<if test="approver != null">
 				#{approver,jdbcType=VARCHAR},
@@ -156,8 +156,8 @@
 			<if test="sort != null">
 				sort = #{sort,jdbcType=INTEGER},
 			</if>
-			<if test="describe != null">
-				describe = #{describe,jdbcType=VARCHAR},
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
 			</if>
 			<if test="approver != null">
 				approver = #{approver,jdbcType=VARCHAR},
@@ -187,12 +187,14 @@
 		workflow_node_name = #{workflowNodeName,jdbcType=VARCHAR},
 		sort =
 		#{sort,jdbcType=INTEGER},
-		describe = #{describe,jdbcType=VARCHAR},
-		approver = #{approver,jdbcType=VARCHAR},
+		remark = #{remark,jdbcType=VARCHAR},
+		approver
+		= #{approver,jdbcType=VARCHAR},
 		is_valid =
 		#{isValid,jdbcType=BIT},
 		create_by = #{createBy,jdbcType=VARCHAR},
-		create_time = #{createTime,jdbcType=TIMESTAMP},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
 		modified_by =
 		#{modifiedBy,jdbcType=VARCHAR},
 		modified_time =
@@ -207,14 +209,14 @@
 		workflow_node
 		(workflow_id,
 		workflow_node_name,
-		sort, describe, approver,
+		sort, remark, approver,
 		is_valid,
 		create_by, create_time,
 		modified_by, modified_time)
 		values
 		(#{workflowId,jdbcType=INTEGER},
 		#{workflowNodeName,jdbcType=VARCHAR},
-		#{sort,jdbcType=INTEGER}, #{describe,jdbcType=VARCHAR},
+		#{sort,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
 		#{approver,jdbcType=VARCHAR},
 		#{isValid,jdbcType=BIT},
 		#{createBy,jdbcType=VARCHAR},
@@ -232,8 +234,8 @@
 			<if test="sort != null">
 				sort = #{sort,jdbcType=INTEGER},
 			</if>
-			<if test="describe != null">
-				describe = #{describe,jdbcType=VARCHAR},
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
 			</if>
 			<if test="approver != null">
 				approver = #{approver,jdbcType=VARCHAR},
@@ -280,15 +282,18 @@
 			<if test="workflowId != null">
 				and workflow_id = #{workflowId,jdbcType=INTEGER}
 			</if>
+			<if test="isValid != null">
+				and is_valid = #{isValid,jdbcType=BIT}
+			</if>
 		</trim>
-		order by sort
+		order by sort, create_time
 	</select>
 
 	<select id="queryWorkflowNodeTemplateInfo" resultMap="WorkflowNodeTemplate"
 		parameterType="com.mmt.oa.dao.model.WorkflowNode">
 		select
 		a.workflow_node_id, a.workflow_id, a.workflow_node_name, a.sort,
-		a.describe, a.approver, b.name,a.is_valid,
+		a.remark, a.approver, b.name,a.is_valid,
 		a.create_by, a.create_time,
 		a.modified_by,
 		a.modified_time
@@ -297,17 +302,17 @@
 		a.approver = b.user_name
 		<trim prefix="where" prefixOverrides="or |and ">
 			<if test="workflowNodeId != null">
-				and workflow_node_id = #{workflowNodeId,jdbcType=INTEGER}
+				and a.workflow_node_id = #{workflowNodeId,jdbcType=INTEGER}
 			</if>
 			<if test="workflowId != null">
-				and workflow_id = #{workflowId,jdbcType=INTEGER}
+				and a.workflow_id = #{workflowId,jdbcType=INTEGER}
+			</if>
+			<if test="isValid != null">
+				and a.is_valid = #{isValid,jdbcType=BIT}
 			</if>
 		</trim>
-		order by sort
+		order by sort, create_time
 	</select>
-
-
-
 
 
 

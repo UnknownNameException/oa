@@ -27,15 +27,17 @@ public class WorkflowServiceImpl implements WorkflowService {
 		return i;
 	}
 
+	/**
+	 * 添加一个流程节点,对应的工作流模板节点数量+1
+	 */
 	@Override
 	public Integer addNewWorkflowNode(WorkflowNode node) {
 		Integer i = nodeMapper.addNewWorkflowNode(node);
 		if (i == 1) {
-			node.setWorkflowNodeId(null);
-			List<WorkflowNode> nodes = queryWorkflowNodeInfo(node);
 			Workflow workflow = new Workflow();
 			workflow.setWorkflowId(node.getWorkflowId());
-			workflow.setWorkflowNodeCount(nodes.size());
+			workflow = queryWorkflowInfoById(workflow);
+			workflow.setWorkflowNodeCount(workflow.getWorkflowNodeCount() + 1);
 			workflow.setModifiedBy(node.getModifiedBy());
 			i = modifyWorkflowInfo(workflow);
 		}
@@ -54,6 +56,9 @@ public class WorkflowServiceImpl implements WorkflowService {
 		return i;
 	}
 
+	/**
+	 * 删除工作流模板,模板对应的节点一起删除
+	 */
 	@Override
 	public Integer deleteWorkflowInfo(Workflow workflow) {
 		Integer i = workflowMapper.deleteWorkflowInfo(workflow);
@@ -67,9 +72,21 @@ public class WorkflowServiceImpl implements WorkflowService {
 		return i;
 	}
 
+	/**
+	 * 删除一个流程节点,对应的工作流模板节点数量-1
+	 */
 	@Override
 	public Integer deleteWorkflowNodeInfo(WorkflowNode node) {
 		Integer i = nodeMapper.deleteWorkflowNodeInfo(node);
+		if (i == 1) {
+			List<WorkflowNode> nodes = queryWorkflowNodeInfo(node);
+			Workflow workflow = new Workflow();
+			workflow.setWorkflowId(nodes.get(0).getWorkflowId());
+			workflow = queryWorkflowInfoById(workflow);
+			workflow.setWorkflowNodeCount(workflow.getWorkflowNodeCount() - 1);
+			workflow.setModifiedBy(node.getModifiedBy());
+			i = modifyWorkflowInfo(workflow);
+		}
 		return i;
 	}
 

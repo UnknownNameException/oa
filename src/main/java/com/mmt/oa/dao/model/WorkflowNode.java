@@ -11,7 +11,7 @@ public class WorkflowNode {
 
 	private Integer sort;
 
-	private String describe;
+	private String remark;
 
 	private String approver;
 
@@ -57,12 +57,12 @@ public class WorkflowNode {
 		this.sort = sort;
 	}
 
-	public String getDescribe() {
-		return describe;
+	public String getRemark() {
+		return remark;
 	}
 
-	public void setDescribe(String describe) {
-		this.describe = describe == null ? null : describe.trim();
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public String getApprover() {
@@ -116,9 +116,9 @@ public class WorkflowNode {
 	@Override
 	public String toString() {
 		return "WorkflowNode [workflowNodeId=" + workflowNodeId + ", workflowId=" + workflowId + ", workflowNodeName="
-				+ workflowNodeName + ", sort=" + sort + ", describe=" + describe + ", approver=" + approver
-				+ ", isValid=" + isValid + ", createBy=" + createBy + ", createTime=" + createTime + ", modifiedBy="
-				+ modifiedBy + ", modifiedTime=" + modifiedTime + "]";
+				+ workflowNodeName + ", sort=" + sort + ", remark=" + remark + ", approver=" + approver + ", isValid="
+				+ isValid + ", createBy=" + createBy + ", createTime=" + createTime + ", modifiedBy=" + modifiedBy
+				+ ", modifiedTime=" + modifiedTime + "]";
 	}
 
 }

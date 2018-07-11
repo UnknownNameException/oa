@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.mmt.oa.dao.model.Task" >
     <id column="task_id" property="taskId" jdbcType="INTEGER" />
     <result column="workflow_id" property="workflowId" jdbcType="INTEGER" />
-    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="task_node_count" property="taskNodeCount" jdbcType="INTEGER" />
     <result column="task_status" property="taskStatus" jdbcType="INTEGER" />
     <result column="is_valid" property="isValid" jdbcType="BIT" />
@@ -14,7 +14,7 @@
     <result column="modified_time" property="modifiedTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    task_id, workflow_id, describe, task_node_count, task_status, is_valid, create_by, 
+    task_id, workflow_id, remark, task_node_count, task_status, is_valid, create_by, 
     create_time, modified_by, modified_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -28,11 +28,11 @@
     where task_id = #{taskId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.mmt.oa.dao.model.Task" >
-    insert into task (task_id, workflow_id, describe, 
+    insert into task (task_id, workflow_id, remark, 
       task_node_count, task_status, is_valid, 
       create_by, create_time, modified_by, 
       modified_time)
-    values (#{taskId,jdbcType=INTEGER}, #{workflowId,jdbcType=INTEGER}, #{describe,jdbcType=VARCHAR}, 
+    values (#{taskId,jdbcType=INTEGER}, #{workflowId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
       #{taskNodeCount,jdbcType=INTEGER}, #{taskStatus,jdbcType=INTEGER}, #{isValid,jdbcType=BIT}, 
       #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifiedBy,jdbcType=VARCHAR}, 
       #{modifiedTime,jdbcType=TIMESTAMP})
@@ -46,8 +46,8 @@
       <if test="workflowId != null" >
         workflow_id,
       </if>
-      <if test="describe != null" >
-        describe,
+      <if test="remark != null" >
+        remark,
       </if>
       <if test="taskNodeCount != null" >
         task_node_count,
@@ -78,8 +78,8 @@
       <if test="workflowId != null" >
         #{workflowId,jdbcType=INTEGER},
       </if>
-      <if test="describe != null" >
-        #{describe,jdbcType=VARCHAR},
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="taskNodeCount != null" >
         #{taskNodeCount,jdbcType=INTEGER},
@@ -110,8 +110,8 @@
       <if test="workflowId != null" >
         workflow_id = #{workflowId,jdbcType=INTEGER},
       </if>
-      <if test="describe != null" >
-        describe = #{describe,jdbcType=VARCHAR},
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="taskNodeCount != null" >
         task_node_count = #{taskNodeCount,jdbcType=INTEGER},
@@ -140,7 +140,7 @@
   <update id="updateByPrimaryKey" parameterType="com.mmt.oa.dao.model.Task" >
     update task
     set workflow_id = #{workflowId,jdbcType=INTEGER},
-      describe = #{describe,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
       task_node_count = #{taskNodeCount,jdbcType=INTEGER},
       task_status = #{taskStatus,jdbcType=INTEGER},
       is_valid = #{isValid,jdbcType=BIT},
