@@ -2,10 +2,13 @@ package com.mmt.oa.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -292,7 +295,16 @@ public class WorkflowController {
 			}
 			Workflow workflow = JSON.parseObject(JSON.toJSONString(obj), Workflow.class);
 			List<Workflow> workflows = workflowServiceImpl.queryWorkflowInfo(workflow);
-			List<WorkflowTemplateDto> dtos = JSON.parseArray(JSON.toJSONString(workflows), WorkflowTemplateDto.class);
+			List<WorkflowTemplateDto> dtos = new ArrayList<>();
+			for (Workflow wf : workflows) {
+				WorkflowTemplateDto tem = new WorkflowTemplateDto();
+				tem = JSON.parseObject(JSON.toJSONString(wf), WorkflowTemplateDto.class);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");
+				tem.setCreateTime(sdf.format(wf.getCreateTime()));
+				tem.setModifiedTime(sdf.format(wf.getModifiedTime()));
+				dtos.add(tem);
+			}
+			
 			if (workflows == null || workflows.isEmpty()) {
 				response.setResCode(1);
 				response.setResMsg("未查询到数据,请更改查询条件后重试!");
@@ -302,15 +314,7 @@ public class WorkflowController {
 					node.setWorkflowId(dto.getWorkflowId());
 					node.setIsValid(true);
 					List<WorkflowNodeTemplate> nodes = workflowServiceImpl.queryWorkflowNodeTemplateInfo(node);
-					List<WorkflowNodeTemplateDto> nodeDtos = new ArrayList<>();
-					for (WorkflowNodeTemplate template : nodes) {
-						WorkflowNodeTemplateDto tem = JSON.parseObject(JSON.toJSONString(template),
-								WorkflowNodeTemplateDto.class);
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss:mm");
-						tem.setCreateTime(sdf.format(template.getCreateTime()));
-						tem.setModifiedTime(sdf.format(template.getModifiedTime()));
-						nodeDtos.add(tem);
-					}
+					List<WorkflowNodeTemplateDto> nodeDtos = JSON.parseArray(JSON.toJSONString(nodes), WorkflowNodeTemplateDto.class);
 					dto.setWorkflowNodes(nodeDtos);
 				}
 				response.setResCode(0);

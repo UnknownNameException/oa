@@ -293,10 +293,10 @@
 		parameterType="com.mmt.oa.dao.model.WorkflowNode">
 		select
 		a.workflow_node_id, a.workflow_id, a.workflow_node_name, a.sort,
-		a.remark, a.approver, b.name,a.is_valid,
-		a.create_by, a.create_time,
+		a.remark, a.approver, b.name as approverName,a.is_valid,
+		a.create_by, cast(a.create_time as char) as create_time,
 		a.modified_by,
-		a.modified_time
+		cast(a.modified_time as char) as modified_time
 		from workflow_node a
 		left join user b on
 		a.approver = b.user_name

@@ -22,11 +22,11 @@ public class WorkflowNodeTemplate {
 
 	private String createBy;
 
-	private Date createTime;
+	private String createTime;
 
 	private String modifiedBy;
 
-	private Date modifiedTime;
+	private String modifiedTime;
 
 	public int getWorkflowNodeId() {
 		return workflowNodeId;
@@ -108,19 +108,19 @@ public class WorkflowNodeTemplate {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public Date getCreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
 
-	public Date getModifiedTime() {
+	public String getModifiedTime() {
 		return modifiedTime;
 	}
 
-	public void setModifiedTime(Date modifiedTime) {
+	public void setModifiedTime(String modifiedTime) {
 		this.modifiedTime = modifiedTime;
 	}
 

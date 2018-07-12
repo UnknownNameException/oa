@@ -1,11 +1,11 @@
-package com.mmt.oa.dao.model;
+package com.mmt.oa.model;
 
 import java.util.Date;
+import java.util.List;
 
-public class Task {
+public class TaskDto {
+
 	private Integer taskId;
-
-	private String instenceId;
 
 	private Integer workflowId;
 
@@ -25,20 +25,14 @@ public class Task {
 
 	private Date modifiedTime;
 
+	private List<TaskNodeDto> nodes;
+
 	public Integer getTaskId() {
 		return taskId;
 	}
 
 	public void setTaskId(Integer taskId) {
 		this.taskId = taskId;
-	}
-
-	public String getInstenceId() {
-		return instenceId;
-	}
-
-	public void setInstenceId(String instenceId) {
-		this.instenceId = instenceId;
 	}
 
 	public Integer getWorkflowId() {
@@ -86,7 +80,7 @@ public class Task {
 	}
 
 	public void setCreateBy(String createBy) {
-		this.createBy = createBy == null ? null : createBy.trim();
+		this.createBy = createBy;
 	}
 
 	public Date getCreateTime() {
@@ -102,7 +96,7 @@ public class Task {
 	}
 
 	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy == null ? null : modifiedBy.trim();
+		this.modifiedBy = modifiedBy;
 	}
 
 	public Date getModifiedTime() {
@@ -113,12 +107,20 @@ public class Task {
 		this.modifiedTime = modifiedTime;
 	}
 
+	public List<TaskNodeDto> getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(List<TaskNodeDto> nodes) {
+		this.nodes = nodes;
+	}
+
 	@Override
 	public String toString() {
-		return "Task [taskId=" + taskId + ", instenceId=" + instenceId + ", workflowId=" + workflowId + ", remark="
-				+ remark + ", taskNodeCount=" + taskNodeCount + ", taskStatus=" + taskStatus + ", isValid=" + isValid
-				+ ", createBy=" + createBy + ", createTime=" + createTime + ", modifiedBy=" + modifiedBy
-				+ ", modifiedTime=" + modifiedTime + "]";
+		return "TaskDto [taskId=" + taskId + ", workflowId=" + workflowId + ", remark=" + remark + ", taskNodeCount="
+				+ taskNodeCount + ", taskStatus=" + taskStatus + ", isValid=" + isValid + ", createBy=" + createBy
+				+ ", createTime=" + createTime + ", modifiedBy=" + modifiedBy + ", modifiedTime=" + modifiedTime
+				+ ", nodes=" + nodes + "]";
 	}
 
 }

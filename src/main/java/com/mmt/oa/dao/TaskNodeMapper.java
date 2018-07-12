@@ -17,4 +17,6 @@ public interface TaskNodeMapper {
     int updateByPrimaryKeySelective(TaskNode record);
 
     int updateByPrimaryKey(TaskNode record);
+    
+    Integer addNewTaskNode(TaskNode node);
 }
