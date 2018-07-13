@@ -16,6 +16,24 @@
 		<result column="modified_time" property="modifiedTime"
 			jdbcType="TIMESTAMP" />
 	</resultMap>
+	<resultMap id="TemplateResultMap" type="com.mmt.oa.dao.model.TaskTemplate">
+		<id column="task_id" property="taskId" jdbcType="INTEGER" />
+		<result column="instence_id" property="instenceId" jdbcType="VARCHAR" />
+		<result column="workflow_id" property="workflowId" jdbcType="INTEGER" />
+		<result column="workflow_name" property="workflowId" jdbcType="VARCHAR" />
+		<result column="workflow_content" property="workflowId"
+			jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="task_node_count" property="taskNodeCount"
+			jdbcType="INTEGER" />
+		<result column="task_status" property="taskStatus" jdbcType="INTEGER" />
+		<result column="is_valid" property="isValid" jdbcType="BIT" />
+		<result column="create_by" property="createBy" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+		<result column="modified_by" property="modifiedBy" jdbcType="VARCHAR" />
+		<result column="modified_time" property="modifiedTime"
+			jdbcType="VARCHAR" />
+	</resultMap>
 	<sql id="Base_Column_List">
 		task_id, instence_id, workflow_id, remark, task_node_count,
 		task_status, is_valid,
@@ -214,7 +232,37 @@
 		</trim>
 	</select>
 
-
+	<select id="queryTaskInfoByModel" resultMap="TemplateResultMap"
+		parameterType="com.mmt.oa.dao.model.Task">
+		select
+		a.task_id, a.instence_id, a.workflow_id,
+		b.workflow_name, b.workflow_content, a.remark,
+		a.task_node_count, a.task_status, a.is_valid,
+		a.create_by, cast(a.create_time as char) as	create_time,
+		a.modified_by, cast(a.modified_time as char) as	modified_time
+		from task a
+		left join workflow b on a.workflow_id =	b.workflow_id
+		<trim prefix="where" prefixOverrides="or |and ">
+			<if test="taskId != null">
+				and a.task_id = #{taskId,jdbcType=INTEGER}
+			</if>
+			<if test="workflowId != null">
+				and a.workflow_id = #{workflowId,jdbcType=INTEGER}
+			</if>
+			<if test="instenceId != null">
+				and a.instence_id = #{instenceId,jdbcType=VARCHAR}
+			</if>
+			<if test="taskStatus != null">
+				and a.task_status = #{taskStatus,jdbcType=INTEGER}
+			</if>
+			<if test="isValid != null">
+				and a.is_valid = #{isValid,jdbcType=BIT}
+			</if>
+			<if test="createBy != null">
+				and a.create_by = #{createBy,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</select>
 
 
 

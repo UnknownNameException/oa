@@ -22,10 +22,35 @@
 		<result column="modified_time" property="modifiedTime"
 			jdbcType="TIMESTAMP" />
 	</resultMap>
+	<resultMap id="TemplateResultMap" type="com.mmt.oa.dao.model.TaskNodeTemplate">
+		<id column="task_node_id" property="taskNodeId" jdbcType="INTEGER" />
+		<result column="task_id" property="taskId" jdbcType="INTEGER" />
+		<result column="workflow_id" property="workflowId" jdbcType="INTEGER" />
+		<result column="workflow_node_id" property="workflowNodeId"
+			jdbcType="INTEGER" />
+		<result column="task_node_sort" property="taskNodeSort"
+			jdbcType="INTEGER" />
+		<result column="task_node_approver" property="taskNodeApprover"
+			jdbcType="VARCHAR" />
+		<result column="task_node_approver_name" property="taskNodeApproverName"
+			jdbcType="VARCHAR" />
+		<result column="task_node_status" property="taskNodeStatus"
+			jdbcType="INTEGER" />
+		<result column="approval_opinion" property="approvalOpinion"
+			jdbcType="VARCHAR" />
+		<result column="is_valid" property="isValid" jdbcType="BIT" />
+		<result column="create_by" property="createBy" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+		<result column="modified_by" property="modifiedBy" jdbcType="VARCHAR" />
+		<result column="modified_time" property="modifiedTime"
+			jdbcType="VARCHAR" />
+	</resultMap>
 	<sql id="Base_Column_List">
-		task_node_id, task_id, workflow_id, workflow_node_id, task_node_sort,
+		task_node_id, task_id, workflow_id, workflow_node_id,
+		task_node_sort,
 		task_node_approver,
-		task_node_status, approval_opinion, is_valid, create_by, create_time, modified_by,
+		task_node_status, approval_opinion,
+		is_valid, create_by, create_time, modified_by,
 		modified_time
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
@@ -36,18 +61,23 @@
 		where task_node_id = #{taskNodeId,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from task_node
+		delete from
+		task_node
 		where task_node_id = #{taskNodeId,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.mmt.oa.dao.model.TaskNode">
-		insert into task_node (task_node_id, task_id, workflow_id,
-		workflow_node_id, task_node_sort, task_node_approver,
+		insert into task_node
+		(task_node_id, task_id, workflow_id,
+		workflow_node_id, task_node_sort,
+		task_node_approver,
 		task_node_status, approval_opinion, is_valid,
 		create_by, create_time, modified_by,
 		modified_time)
-		values (#{taskNodeId,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER},
+		values
+		(#{taskNodeId,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER},
 		#{workflowId,jdbcType=INTEGER},
-		#{workflowNodeId,jdbcType=INTEGER}, #{taskNodeSort,jdbcType=INTEGER},
+		#{workflowNodeId,jdbcType=INTEGER},
+		#{taskNodeSort,jdbcType=INTEGER},
 		#{taskNodeApprover,jdbcType=VARCHAR},
 		#{taskNodeStatus,jdbcType=INTEGER},
 		#{approvalOpinion,jdbcType=VARCHAR}, #{isValid,jdbcType=BIT},
@@ -156,7 +186,8 @@
 				task_node_sort = #{taskNodeSort,jdbcType=INTEGER},
 			</if>
 			<if test="taskNodeApprover != null">
-				task_node_approver = #{taskNodeApprover,jdbcType=VARCHAR},
+				task_node_approver =
+				#{taskNodeApprover,jdbcType=VARCHAR},
 			</if>
 			<if test="taskNodeStatus != null">
 				task_node_status = #{taskNodeStatus,jdbcType=INTEGER},
@@ -185,27 +216,40 @@
 	<update id="updateByPrimaryKey" parameterType="com.mmt.oa.dao.model.TaskNode">
 		update task_node
 		set task_id = #{taskId,jdbcType=INTEGER},
-		workflow_id = #{workflowId,jdbcType=INTEGER},
-		workflow_node_id = #{workflowNodeId,jdbcType=INTEGER},
-		task_node_sort = #{taskNodeSort,jdbcType=INTEGER},
-		task_node_approver = #{taskNodeApprover,jdbcType=VARCHAR},
-		task_node_status = #{taskNodeStatus,jdbcType=INTEGER},
-		approval_opinion = #{approvalOpinion,jdbcType=VARCHAR},
-		is_valid = #{isValid,jdbcType=BIT},
+		workflow_id =
+		#{workflowId,jdbcType=INTEGER},
+		workflow_node_id =
+		#{workflowNodeId,jdbcType=INTEGER},
+		task_node_sort =
+		#{taskNodeSort,jdbcType=INTEGER},
+		task_node_approver =
+		#{taskNodeApprover,jdbcType=VARCHAR},
+		task_node_status =
+		#{taskNodeStatus,jdbcType=INTEGER},
+		approval_opinion =
+		#{approvalOpinion,jdbcType=VARCHAR},
+		is_valid =
+		#{isValid,jdbcType=BIT},
 		create_by = #{createBy,jdbcType=VARCHAR},
 		create_time = #{createTime,jdbcType=TIMESTAMP},
-		modified_by = #{modifiedBy,jdbcType=VARCHAR},
-		modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
-		where task_node_id = #{taskNodeId,jdbcType=INTEGER}
+		modified_by =
+		#{modifiedBy,jdbcType=VARCHAR},
+		modified_time =
+		#{modifiedTime,jdbcType=TIMESTAMP}
+		where task_node_id =
+		#{taskNodeId,jdbcType=INTEGER}
 	</update>
 
 	<insert id="addNewTaskNode" parameterType="com.mmt.oa.dao.model.TaskNode">
-		insert into task_node (task_id, workflow_id,
-		workflow_node_id, task_node_sort, task_node_approver,
+		insert into task_node
+		(task_id, workflow_id,
+		workflow_node_id, task_node_sort,
+		task_node_approver,
 		task_node_status, approval_opinion, is_valid,
 		create_by, create_time, modified_by,
 		modified_time)
-		values (#{taskId,jdbcType=INTEGER},
+		values
+		(#{taskId,jdbcType=INTEGER},
 		#{workflowId,jdbcType=INTEGER},
 		#{workflowNodeId,jdbcType=INTEGER}, #{taskNodeSort,jdbcType=INTEGER},
 		#{taskNodeApprover,jdbcType=VARCHAR},
@@ -216,9 +260,72 @@
 		#{modifiedTime,jdbcType=TIMESTAMP})
 	</insert>
 
+	<update id="approveTaskNode" parameterType="com.mmt.oa.dao.model.TaskNode">
+		update task_node
+		<set>
+			<if test="taskNodeStatus != null">
+				task_node_status = #{taskNodeStatus,jdbcType=INTEGER},
+			</if>
+			<if test="approvalOpinion != null">
+				approval_opinion = #{approvalOpinion,jdbcType=VARCHAR},
+			</if>
+			<if test="modifiedBy != null">
+				modified_by = #{modifiedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="isValid != null">
+				is_valid = #{isValid,jdbcType=BIT},
+			</if>
+		</set>
+		<trim prefix="where" prefixOverrides="or |and ">
+			<if test="taskNodeId != null">
+				and task_node_id = #{taskNodeId,jdbcType=INTEGER}
+			</if>
+			<if test="taskId != null">
+				and task_id = #{taskId,jdbcType=INTEGER}
+			</if>
+			<if test="taskNodeId != null">
+				and workflow_id = #{workflowId,jdbcType=INTEGER}
+			</if>
+			<if test="taskNodeId != null">
+				and workflow_node_id = #{workflowNodeId,jdbcType=INTEGER}
+			</if>
+		</trim>
+	</update>
 
-
-
+	<select id="queryTaskNodeInfoByModel" resultMap="TemplateResultMap"
+		parameterType="com.mmt.oa.dao.model.TaskNode">
+		select a.task_node_id, a.task_id, a.workflow_id,
+		a.workflow_node_id,	a.task_node_sort, a.task_node_approver, 
+		b.name as task_node_approver_name, a.task_node_status, a.approval_opinion,
+		a.is_valid,	a.create_by, cast(a.create_time as char) as create_time,
+		a.modified_by,	cast(a.modified_time as char) as modified_time
+		from task_node a
+		left join user b on a.task_node_approver = b.user_name
+		<trim prefix="where" prefixOverrides="or |and ">
+			<if test="taskNodeId != null">
+				and a.task_node_id = #{taskNodeId,jdbcType=INTEGER}
+			</if>
+			<if test="taskId != null">
+				and a.task_id = #{taskId,jdbcType=INTEGER}
+			</if>
+			<if test="taskNodeId != null">
+				and a.workflow_id = #{workflowId,jdbcType=INTEGER}
+			</if>
+			<if test="taskNodeId != null">
+				and a.workflow_node_id = #{workflowNodeId,jdbcType=INTEGER}
+			</if>
+			<if test="taskNodeApprover != null">
+				and a.task_node_approver =
+				#{taskNodeApprover,jdbcType=VARCHAR}
+			</if>
+			<if test="taskNodeStatus != null">
+				and a.task_node_status = #{taskNodeStatus,jdbcType=INTEGER}
+			</if>
+			<if test="isValid != null">
+				and a.is_valid = #{isValid,jdbcType=BIT}
+			</if>
+		</trim>
+	</select>
 
 
 

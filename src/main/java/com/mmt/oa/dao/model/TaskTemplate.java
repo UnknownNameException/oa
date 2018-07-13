@@ -1,9 +1,8 @@
-package com.mmt.oa.model;
+package com.mmt.oa.dao.model;
 
 import java.util.Date;
-import java.util.List;
 
-public class TaskDto {
+public class TaskTemplate {
 
 	private Integer taskId;
 
@@ -23,13 +22,11 @@ public class TaskDto {
 
 	private String createBy;
 
-	private Date createTime;
+	private String createTime;
 
 	private String modifiedBy;
 
-	private Date modifiedTime;
-
-	private List<TaskNodeDto> nodes;
+	private String modifiedTime;
 
 	public Integer getTaskId() {
 		return taskId;
@@ -103,12 +100,20 @@ public class TaskDto {
 		this.createBy = createBy;
 	}
 
-	public Date getCreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getModifiedTime() {
+		return modifiedTime;
+	}
+
+	public void setModifiedTime(String modifiedTime) {
+		this.modifiedTime = modifiedTime;
 	}
 
 	public String getModifiedBy() {
@@ -119,29 +124,12 @@ public class TaskDto {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public Date getModifiedTime() {
-		return modifiedTime;
-	}
-
-	public void setModifiedTime(Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
-
-	public List<TaskNodeDto> getNodes() {
-		return nodes;
-	}
-
-	public void setNodes(List<TaskNodeDto> nodes) {
-		this.nodes = nodes;
-	}
-
 	@Override
 	public String toString() {
-		return "TaskDto [taskId=" + taskId + ", workflowId=" + workflowId + ", workflowName=" + workflowName
+		return "TaskTemplate [taskId=" + taskId + ", workflowId=" + workflowId + ", workflowName=" + workflowName
 				+ ", workflowContent=" + workflowContent + ", remark=" + remark + ", taskNodeCount=" + taskNodeCount
 				+ ", taskStatus=" + taskStatus + ", isValid=" + isValid + ", createBy=" + createBy + ", createTime="
-				+ createTime + ", modifiedBy=" + modifiedBy + ", modifiedTime=" + modifiedTime + ", nodes=" + nodes
-				+ "]";
+				+ createTime + ", modifiedBy=" + modifiedBy + ", modifiedTime=" + modifiedTime + "]";
 	}
 
 }

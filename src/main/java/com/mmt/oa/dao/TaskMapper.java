@@ -1,8 +1,11 @@
 package com.mmt.oa.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.mmt.oa.dao.model.Task;
+import com.mmt.oa.dao.model.TaskTemplate;
 
 @Repository
 public interface TaskMapper {
@@ -21,4 +24,6 @@ public interface TaskMapper {
 	Integer addNewTask(Task task);
 
 	Task queryTaskInfoById(Task task);
+	
+	List<TaskTemplate> queryTaskInfoByModel(Task task);
 }
