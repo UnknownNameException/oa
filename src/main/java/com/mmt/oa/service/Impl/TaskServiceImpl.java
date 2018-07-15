@@ -81,9 +81,20 @@ public class TaskServiceImpl implements TaskService {
 			wn.setWorkflowId(node.getWorkflowId());
 			wn.setIsValid(true);
 			List<WorkflowNodeTemplate> templates = wnMapper.queryWorkflowNodeTemplateInfo(wn);// 取出按sort和创建日期排序后的节点列表
+			if ((node.getTaskNodeSort() + 1) > templates.size()) {// 如果节点序号+1大于查询出的节点数量,则流程所有节点审批完成
+				Task task = new Task();
+				task.setTaskId(node.getTaskId());
+				task.setTaskStatus(2);
+				task.setModifiedBy(node.getModifiedBy());
+				i = taskMapper.modifyTaskInfoById(task);
+				if (i != 0) {
+					i = 2;
+				}
+				return i;
+			}
 			WorkflowNodeTemplate template = templates.get(node.getTaskNodeSort());
 			int taskId = node.getTaskId();
-			String createBy = node.getCreateBy();
+			String modifiedBy = node.getModifiedBy();
 			node = new TaskNode();
 			node.setTaskId(taskId);
 			node.setWorkflowId(template.getWorkflowId());
@@ -92,9 +103,9 @@ public class TaskServiceImpl implements TaskService {
 			node.setTaskNodeApprover(template.getApprover());
 			node.setTaskNodeStatus(0);
 			node.setIsValid(true);
-			node.setCreateBy(createBy);
+			node.setCreateBy(modifiedBy);
 			node.setCreateTime(new Date());
-			node.setModifiedBy(createBy);
+			node.setModifiedBy(modifiedBy);
 			node.setModifiedTime(new Date());
 			i = nodeMapper.addNewTaskNode(node);// 开启下一节点
 		}
@@ -112,7 +123,17 @@ public class TaskServiceImpl implements TaskService {
 		List<TaskTemplate> tasks = taskMapper.queryTaskInfoByModel(task);
 		return tasks;
 	}
-	
-	
 
+	@Override
+	public Integer modifyTaskInfoByModel(Task task) {
+		Integer i = taskMapper.modifyTaskInfoByModel(task);
+		return i;
+	}
+
+	@Override
+	public Integer modifyTaskInfoById(Task task) {
+		Integer i = taskMapper.modifyTaskInfoById(task);
+		return i;
+	}
+	
 }

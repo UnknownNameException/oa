@@ -27,5 +27,7 @@ public interface WorkflowService {
 	Workflow queryWorkflowInfoById(Workflow workflow);
 
 	List<WorkflowNodeTemplate> queryWorkflowNodeTemplateInfo(WorkflowNode node);
+	
+	List<WorkflowNodeTemplate> queryWorkflowNodeTemplateByModel(WorkflowNode node);
 
 }

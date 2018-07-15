@@ -314,6 +314,33 @@
 		order by sort, create_time
 	</select>
 
+	<select id="queryWorkflowNodeTemplateByModel" resultMap="WorkflowNodeTemplate"
+		parameterType="com.mmt.oa.dao.model.WorkflowNode">
+		select
+		a.workflow_node_id, a.workflow_id, a.workflow_node_name, a.sort,
+		a.remark, a.approver, b.name as approverName,a.is_valid,
+		a.create_by, cast(a.create_time as char) as create_time,
+		a.modified_by,
+		cast(a.modified_time as char) as modified_time
+		from workflow_node a
+		left join user b on
+		a.approver = b.user_name
+		<trim prefix="where" prefixOverrides="or |and ">
+			<if test="workflowNodeId != null">
+				and a.workflow_node_id = #{workflowNodeId,jdbcType=INTEGER}
+			</if>
+			<if test="workflowId != null">
+				and a.workflow_id = #{workflowId,jdbcType=INTEGER}
+			</if>
+			<if test="sort != null">
+				and a.sort = #{sort,jdbcType=INTEGER}
+			</if>
+			<if test="isValid != null">
+				and a.is_valid = #{isValid,jdbcType=BIT}
+			</if>
+		</trim>
+		order by sort, create_time
+	</select>
 
 
 

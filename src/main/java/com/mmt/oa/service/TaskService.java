@@ -14,6 +14,10 @@ public interface TaskService {
 	public Integer approveTaskNode(TaskNode node);
 
 	public List<TaskNodeTemplate> queryTaskNodeInfoByModel(TaskNode node);
-	
+
 	public List<TaskTemplate> queryTaskInfoByModel(Task task);
+
+	public Integer modifyTaskInfoByModel(Task task);
+
+	public Integer modifyTaskInfoById(Task task);
 }

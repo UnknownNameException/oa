@@ -114,4 +114,10 @@ public class WorkflowServiceImpl implements WorkflowService {
 		return nodes;
 	}
 
+	@Override
+	public List<WorkflowNodeTemplate> queryWorkflowNodeTemplateByModel(WorkflowNode node) {
+		List<WorkflowNodeTemplate> nodes = nodeMapper.queryWorkflowNodeTemplateByModel(node);
+		return nodes;
+	}
+
 }

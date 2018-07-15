@@ -30,5 +30,7 @@ public interface WorkflowNodeMapper {
 	List<WorkflowNode> queryWorkflowNodeInfo(WorkflowNode node);
 	
 	List<WorkflowNodeTemplate> queryWorkflowNodeTemplateInfo(WorkflowNode node);
+	
+	List<WorkflowNodeTemplate> queryWorkflowNodeTemplateByModel(WorkflowNode node);
 
 }

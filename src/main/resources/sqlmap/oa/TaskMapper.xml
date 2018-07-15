@@ -18,10 +18,9 @@
 	</resultMap>
 	<resultMap id="TemplateResultMap" type="com.mmt.oa.dao.model.TaskTemplate">
 		<id column="task_id" property="taskId" jdbcType="INTEGER" />
-		<result column="instence_id" property="instenceId" jdbcType="VARCHAR" />
 		<result column="workflow_id" property="workflowId" jdbcType="INTEGER" />
-		<result column="workflow_name" property="workflowId" jdbcType="VARCHAR" />
-		<result column="workflow_content" property="workflowId"
+		<result column="workflow_name" property="workflowName" jdbcType="VARCHAR" />
+		<result column="workflow_content" property="workflowContent"
 			jdbcType="VARCHAR" />
 		<result column="remark" property="remark" jdbcType="VARCHAR" />
 		<result column="task_node_count" property="taskNodeCount"
@@ -235,7 +234,7 @@
 	<select id="queryTaskInfoByModel" resultMap="TemplateResultMap"
 		parameterType="com.mmt.oa.dao.model.Task">
 		select
-		a.task_id, a.instence_id, a.workflow_id,
+		a.task_id, a.workflow_id,
 		b.workflow_name, b.workflow_content, a.remark,
 		a.task_node_count, a.task_status, a.is_valid,
 		a.create_by, cast(a.create_time as char) as	create_time,
@@ -265,8 +264,61 @@
 	</select>
 
 
+	<update id="modifyTaskInfoByModel" parameterType="com.mmt.oa.dao.model.Task">
+		update task
+		<set>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="modifiedBy != null">
+				modified_by = #{modifiedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="isValid != null">
+				is_valid = #{isValid,jdbcType=BIT},
+			</if>
+		</set>
+		<trim prefix="where" prefixOverrides="or |and ">
+			<if test="taskId != null">
+				and task_id = #{taskId,jdbcType=INTEGER}
+			</if>
+			<if test="workflowId != null">
+				and workflow_id = #{workflowId,jdbcType=INTEGER}
+			</if>
+			<if test="instenceId != null">
+				and instence_id = #{instenceId,jdbcType=VARCHAR}
+			</if>
+			<if test="taskStatus != null">
+				and task_status = #{taskStatus,jdbcType=INTEGER}
+			</if>
+			<if test="isValid != null">
+				and is_valid = #{isValid,jdbcType=BIT}
+			</if>
+		</trim>
+	</update>
 
 
+	<update id="modifyTaskInfoById" parameterType="com.mmt.oa.dao.model.Task">
+		update task
+		<set>
+			<if test="taskStatus != null">
+				task_status = #{taskStatus,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="modifiedBy != null">
+				modified_by = #{modifiedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="isValid != null">
+				is_valid = #{isValid,jdbcType=BIT},
+			</if>
+		</set>
+		<trim prefix="where" prefixOverrides="or |and ">
+			<if test="taskId != null">
+				and task_id = #{taskId,jdbcType=INTEGER}
+			</if>
+		</trim>
+	</update>
 
 
 

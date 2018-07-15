@@ -24,6 +24,10 @@ public interface TaskMapper {
 	Integer addNewTask(Task task);
 
 	Task queryTaskInfoById(Task task);
-	
+
 	List<TaskTemplate> queryTaskInfoByModel(Task task);
+
+	Integer modifyTaskInfoByModel(Task task);
+
+	Integer modifyTaskInfoById(Task task);
 }
